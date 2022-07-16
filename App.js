@@ -1,6 +1,7 @@
 import React, {useEffect, useRef, useState} from 'react';
 import { registerVevComponent, useSize } from '@vev/react';
 import FsLightbox from 'fslightbox-react';
+import "./styles.scss";
 
 //Definer lightbox som default funksjon, bruk elementref og usesize for å hente størrelsen på elementet.
 const Lightbox = (props) => {
@@ -11,7 +12,7 @@ const Lightbox = (props) => {
   //Toggler er for fslightbox og imgList er listen over urler til bilder
   const [toggler, setToggler] = useState(false);
   const [imgList, setImglist] = useState(null);
-  const [listLenght, setListLenght] = useState()
+  const [listLength, setListLength] = useState();
 
 //Hver gang props endres, tøm imglist og fyll den med det som er i Images
   useEffect(() => {
@@ -23,7 +24,7 @@ const Lightbox = (props) => {
     }
     setKey(i)
     setImglist(tempList)
-    console.log("nå kjørte useEffect", props, props.Images[0].image)
+    console.log("nå kjørte useEffect", props, props.Images.length)
   }, [props.Images.length])
 
 
@@ -39,7 +40,7 @@ const Lightbox = (props) => {
 toggler={toggler}
 sources={imgList}
 thumbs={imgList}
-key={props.Images.length}
+key={key}
 slide={1}
 
 /></div>
