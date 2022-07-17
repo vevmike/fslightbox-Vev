@@ -6,46 +6,40 @@ import "./styles.scss";
 //Definer lightbox som default funksjon, bruk elementref og usesize for å hente størrelsen på elementet.
 const Lightbox = (props) => {
   const elementReference = useRef(null);
+  var cover = "https://cdn.vev.design/cdn-cgi/image/f=auto,q=82/private/eZnxAcdFstddxKYGM8AXAUiPaAo2/image/_W5nWypsaj.png";
   const { width, height } = useSize(props.hostRef);
   const [key , setKey ] = useState(0);
 
   //Toggler er for fslightbox og imgList er listen over urler til bilder
   const [toggler, setToggler] = useState(false);
   const [imgList, setImglist] = useState(null);
-  const [listLength, setListLength] = useState();
+
 
 //Hver gang props endres, tøm imglist og fyll den med det som er i Images
   useEffect(() => {
-    let tempList = []
-    var i = 0
-    for (var i = 0; (i <= (props.Images.length - 1 )); i++) {
-              tempList.push(props.Images[i].image.url)
-
+    if (typeof props.Images !== 'undefined') {
+      let tempList = []
+      var i = 0
+      for (var i = 0; (i <= (props.Images.length - 1 )); i++) {
+                tempList.push(props.Images[i].image.url)
+      }
+      setKey(i)
+      setImglist(tempList)
     }
-    setKey(i)
-    setImglist(tempList)
-    console.log("nå kjørte useEffect", props, props.Images.length)
+    console.log("nå kjørte useEffect",  props.Images[0].image.url)
   }, [props.Images.length])
-
-
-
 
   return ( 
   <>
   <div>
-<img src={props.Images[0].image.url} alt="Load an image" width={ width } height={ height } onClick={() => setToggler(!toggler)} />
-
-
-<FsLightbox
-toggler={toggler}
-sources={imgList}
-thumbs={imgList}
-key={key}
-slide={1}
-
-/></div>
-</>
-
+  <img src={props.Images[0].image.url} alt="Load an image" width={ width } height={ height } onClick={() => setToggler(!toggler)}/>
+  <FsLightbox
+  toggler={toggler}
+  sources={imgList}
+  thumbs={imgList}
+  key={key}
+  slide={1}/></div>
+  </>
 
 )};
 
@@ -62,6 +56,7 @@ registerVevComponent(Lightbox, {
           type: "image",
         },
       ],
+      
     },
   ],
 });
