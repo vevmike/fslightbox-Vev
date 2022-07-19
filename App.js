@@ -1,21 +1,22 @@
 import React, {useEffect, useRef, useState} from 'react';
 import { registerVevComponent, useSize } from '@vev/react';
 import FsLightbox from 'fslightbox-react';
-import "./styles.scss";
+import "./styles.css";
 
 //Definer lightbox som default funksjon, bruk elementref og usesize for å hente størrelsen på elementet.
 const Lightbox = (props) => {
   const elementReference = useRef(null);
-  var cover = "https://cdn.vev.design/cdn-cgi/image/f=auto,q=82/private/eZnxAcdFstddxKYGM8AXAUiPaAo2/image/_W5nWypsaj.png";
+  const [ cover, setCover ]  = useState("https://cdn.vev.design/cdn-cgi/image/f=auto,q=82/private/eZnxAcdFstddxKYGM8AXAUiPaAo2/image/_W5nWypsaj.png");
   const { width, height } = useSize(props.hostRef);
   const [key , setKey ] = useState(0);
 
+
   //Toggler er for fslightbox og imgList er listen over urler til bilder
   const [toggler, setToggler] = useState(false);
-  const [imgList, setImglist] = useState(null);
+  const [imgList, setImglist] = useState([]);
 
 
-//Hver gang props endres, tøm imglist og fyll den med det som er i Images
+//Hver settings endres, tøm imglist og fyll den med det som er i Images
   useEffect(() => {
     if (typeof props.Images !== 'undefined') {
       let tempList = []
@@ -25,14 +26,22 @@ const Lightbox = (props) => {
       }
       setKey(i)
       setImglist(tempList)
-    }
-    console.log("nå kjørte useEffect",  props.Images[0].image.url)
-  }, [props.Images.length])
+      setCover(imgList[(props.coverIndex -1 )])
 
+    }
+
+    console.log("nå kjørte useEffect",  props)
+  }, [props?.Images?.length, cover, props.coverIndex])
+  
+ 
+  
   return ( 
   <>
   <div>
-  <img src={props.Images[0].image.url} alt="Load an image" width={ width } height={ height } onClick={() => setToggler(!toggler)}/>
+
+    <img src={cover} alt="Load an image" width={ width } height={ height } onClick={() => setToggler(!toggler)}/>
+  
+  
   <FsLightbox
   toggler={toggler}
   sources={imgList}
@@ -45,7 +54,7 @@ const Lightbox = (props) => {
 
 
 registerVevComponent(Lightbox, {
-  name: "fslightbox-Vev",
+  name: "fslightbox-Vev2",
   props: [
     {
       name: "Images",
@@ -57,6 +66,19 @@ registerVevComponent(Lightbox, {
         },
       ],
       
+    },
+    {
+        name: "coverIndex",
+        type: "number",
+        title: "Index of cover img (One-based indices):",
+        initialValue: 1,
+
+    },
+    {
+        name: "showCover",
+        type: "boolean",
+        title: "Show cover image",
+        initialValue: true,
     },
   ],
 });
