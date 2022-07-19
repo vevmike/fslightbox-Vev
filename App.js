@@ -9,14 +9,11 @@ const Lightbox = (props) => {
   const [ cover, setCover ]  = useState("https://cdn.vev.design/cdn-cgi/image/f=auto,q=82/private/eZnxAcdFstddxKYGM8AXAUiPaAo2/image/_W5nWypsaj.png");
   const { width, height } = useSize(props.hostRef);
   const [key , setKey ] = useState(0);
-
-
   //Toggler er for fslightbox og imgList er listen over urler til bilder
   const [toggler, setToggler] = useState(false);
   const [imgList, setImglist] = useState([]);
-
-
-//Hver settings endres, tøm imglist og fyll den med det som er i Images
+  const [visible, setVisible] = useState(true);
+  //Hver settings endres, tøm imglist og fyll den med det som er i Images
   useEffect(() => {
     if (typeof props.Images !== 'undefined') {
       let tempList = []
@@ -26,20 +23,33 @@ const Lightbox = (props) => {
       }
       setKey(i)
       setImglist(tempList)
+
+      if (props.Images.length === 0){
+        setCover("https://cdn.vev.design/cdn-cgi/image/f=auto,q=82/private/eZnxAcdFstddxKYGM8AXAUiPaAo2/image/_W5nWypsaj.png")
+      } else {
       setCover(imgList[(props.coverIndex -1 )])
-
+      }
     }
-
-    console.log("nå kjørte useEffect",  props)
   }, [props?.Images?.length, cover, props.coverIndex])
   
- 
-  
+  useEffect(() => {
+    if (typeof props.showCover !== 'undefined'){
+     setVisible(props.showCover)
+    } else {
+     setVisible(props.showCover)
+    }
+   
+  }, [props.showCover])
+
+  useEffect(() => {
+     setVisible(true)
+  }, [])
+
   return ( 
   <>
   <div>
 
-    <img src={cover} alt="Load an image" width={ width } height={ height } onClick={() => setToggler(!toggler)}/>
+    <img src={cover} style={{opacity: (visible ? 1 : 0)}} alt="Load an image" width={ width } height={ height } onClick={() => setToggler(!toggler)}/>
   
   
   <FsLightbox
@@ -51,7 +61,6 @@ const Lightbox = (props) => {
   </>
 
 )};
-
 
 registerVevComponent(Lightbox, {
   name: "fslightbox-Vev2",
