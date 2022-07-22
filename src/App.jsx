@@ -4,19 +4,23 @@ import FsLightbox from 'fslightbox-react';
 import "./styles.css";
 
 
-//Definer lightbox som default funksjon, bruk elementref og usesize for å hente størrelsen på elementet.
+//Define the default function. Cover is the image loaded when no images has been loaded.
+
+
 const Lightbox = (props) => {
 
-  const [ cover, setCover ]  = useState("https://cdn.vev.design/cdn-cgi/image/f=auto,q=82/private/eZnxAcdFstddxKYGM8AXAUiPaAo2/image/_W5nWypsaj.png");
+  const cover = "https://cdn.vev.design/cdn-cgi/image/f=auto,q=82/private/eZnxAcdFstddxKYGM8AXAUiPaAo2/image/_W5nWypsaj.png";
   const [ key , setKey ] = useState(0);
-  //Toggler er for fslightbox og imgList er listen over urler til bilder
-  const [toggler, setToggler] = useState(false);
-  const [imgList, setImglist] = useState([]);
-  const [visible, setVisible] = useState(true);
-  
-  //Hver settings endres, tøm imglist og fyll den med det som er i Images
+  const [ toggler, setToggler ] = useState(false);
+  const [ imgList, setImglist ] = useState([]);
+  const [ visible, setVisible ] = useState(true);
+  const [ defaultCoveron, setDefaultcoveron ] = useState(true);
+  const [ coverURL,setCoverurl ] = useState([]);
 
 
+
+// If the Images arrays length, the coverImg URL or the indexnumber setting the preferred coverimage cahnges, check if array is not undefined, then iterate through the image-url's and add them to templist.
+// fsLightbox only updates props if key is set, so we set a new key for each image added. If the list is empty, set defaultCoveron to true. 
   useEffect(() => {
     if (typeof props.Images !== 'undefined') {
       let tempList = []
@@ -25,38 +29,42 @@ const Lightbox = (props) => {
       }
       setKey(i)
       setImglist(tempList)
+      setCoverurl(imgList[(props.coverIndex -1 )])
 
       if (props.Images.length === 0){
-        setCover("https://cdn.vev.design/cdn-cgi/image/f=auto,q=82/private/eZnxAcdFstddxKYGM8AXAUiPaAo2/image/_W5nWypsaj.png")
-        setImglist(["https://cdn.vev.design/cdn-cgi/image/f=auto,q=82/private/eZnxAcdFstddxKYGM8AXAUiPaAo2/image/_W5nWypsaj.png"])
+        setDefaultcoveron(true)
       } else {
-      setCover(imgList[(props.coverIndex -1 )])
+        setDefaultcoveron(false)
       }
-      console.log(imgList)
     }
-  }, [props?.Images?.length, cover, props.coverIndex])
+  }, [props?.Images?.length, coverURL, props.coverIndex])
   
+
+  //Sets visible to true or false based on showCover toggle button
   useEffect(() => {
     if (typeof props.showCover !== 'undefined'){
      setVisible(props.showCover)
     } else {
-     setVisible(props.showCover)
+     setVisible(true)
     }
-  }, [props.showCover])
+  }, [props.showCover, visible])
 
+
+// This runs first, and triggers the above useEffect
   useEffect(() => {  
      setVisible(true)
-     setImglist(["https://cdn.vev.design/cdn-cgi/image/f=auto,q=82/private/eZnxAcdFstddxKYGM8AXAUiPaAo2/image/_W5nWypsaj.png"])
   }, [])
+
+// defaultCoveron state sets wether image is default cover or the imglist.
 
   return ( 
   <>
   <div className='wrapper'>
-    <img src={cover} style={{opacity: (visible ? 1 : 0)}} alt="Load an image" onClick={() => setToggler(!toggler)}/>
+    <img src={defaultCoveron ? cover : coverURL} style={{opacity: (visible ? 1 : 0)}} alt="Load an image" onClick={() => setToggler(!toggler)}/>
     
   <FsLightbox
   toggler={toggler}
-  sources={imgList}
+  sources={defaultCoveron ? [cover] : imgList}
   thumbs={imgList}
   key={key}
   slide={1}/></div>
