@@ -10,3 +10,5 @@ Installation:
 6. Run: vev login
 7. Run: vev start
 8. Open a project and insert the Lightbox.
+
+Demo: https://vvv.vev.site/bag-of-tricks/
