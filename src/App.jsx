@@ -4,7 +4,6 @@ import FsLightbox from 'fslightbox-react';
 import "./styles.css";
 
 
-//Define the default function. Cover is the image loaded when no images has been loaded.
 
 
 const Lightbox = (props) => {
@@ -19,8 +18,6 @@ const Lightbox = (props) => {
 
 
 
-// If the Images arrays length, the coverImg URL or the indexnumber setting the preferred coverimage cahnges, check if array is not undefined, then iterate through the image-url's and add them to templist.
-// fsLightbox only updates props if key is set, so we set a new key for each image added. If the list is empty, set defaultCoveron to true. 
   useEffect(() => {
     if (typeof props.Images !== 'undefined') {
       let tempList = []
@@ -44,7 +41,7 @@ const Lightbox = (props) => {
   }, [props?.Images?.length, coverURL, props.coverIndex])
   
 
-  //Sets visible to true or false based on showCover toggle button
+
   useEffect(() => {
     if (typeof props.showCover !== 'undefined'){
      setVisible(props.showCover)
@@ -54,12 +51,12 @@ const Lightbox = (props) => {
   }, [props.showCover, visible])
 
 
-// This runs first, and triggers the above useEffect
+
   useEffect(() => {  
      setVisible(true)
   }, [])
 
-// defaultCoveron state sets wether image is default cover or the imglist.
+
 
   return ( 
   <>
