@@ -20,7 +20,6 @@ const Lightbox = (props) => {
   useEffect(() => {
     if (typeof props.Images !== 'undefined') {
       let tempList = []
-      var i = 0
       for (var i = 0; (i <= (props.Images.length - 1 )); i++) {
                 tempList.push(props.Images[i].image.url)
       }
@@ -47,6 +46,7 @@ const Lightbox = (props) => {
 
   useEffect(() => {  
      setVisible(true)
+     setImglist(["https://cdn.vev.design/cdn-cgi/image/f=auto,q=82/private/eZnxAcdFstddxKYGM8AXAUiPaAo2/image/_W5nWypsaj.png"])
   }, [])
 
   return ( 
