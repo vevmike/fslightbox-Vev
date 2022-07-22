@@ -29,7 +29,10 @@ const Lightbox = (props) => {
       }
       setKey(i)
       setImglist(tempList)
+      
+      if (props.Images.length > 0){
       setCoverurl(imgList[(props.coverIndex -1 )])
+      }
 
       if (props.Images.length === 0){
         setDefaultcoveron(true)
@@ -37,6 +40,7 @@ const Lightbox = (props) => {
         setDefaultcoveron(false)
       }
     }
+    console.log(props, coverURL)
   }, [props?.Images?.length, coverURL, props.coverIndex])
   
 
