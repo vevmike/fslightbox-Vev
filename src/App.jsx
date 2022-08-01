@@ -1,80 +1,73 @@
-import React, {useEffect, useRef, useState} from 'react';
-import { registerVevComponent, useSize } from '@vev/react';
+import React, {useEffect, useRef, useState, } from 'react';
+import { registerVevComponent, useSize, useEditorState } from '@vev/react';
 import FsLightbox from 'fslightbox-react';
 import "./styles.css";
 
 
+//Define the default function. Cover is the image loaded when no images has been loaded.
 
 
 const Lightbox = (props) => {
 
   const cover = "https://cdn.vev.design/cdn-cgi/image/f=auto,q=82/private/eZnxAcdFstddxKYGM8AXAUiPaAo2/image/_W5nWypsaj.png";
-  const [ key , setKey ] = useState(0);
-  const [ toggler, setToggler ] = useState(false);
-  const [ imgList, setImglist ] = useState([]);
-  const [ visible, setVisible ] = useState(true);
-  const [ defaultCoveron, setDefaultcoveron ] = useState(true);
-  const [ coverURL,setCoverurl ] = useState([]);
-
-
-
+  const [ key,setKey ] = useState(0);
+  const [ toggler,setToggler ] = useState(false);
+  const [ imgList,setImglist ] = useState([]);
+  const [ visible,setVisible ] = useState(true);
+  const [ defaultCoveron,setDefaultcoveron ] = useState(true);
+  const [ coverURL,setCoverurl ] = useState("");
+  const { disabled } = useEditorState();
+ 
   useEffect(() => {
+    var a = 0
     if (typeof props.Images !== 'undefined') {
+      console.log("not undefined", props)
       let tempList = []
-      for (var i = 0; (i <= (props.Images.length - 1 )); i++) {
-                tempList.push(props.Images[i].image.url)
-      }
-      setKey(i)
-      setImglist(tempList)
-      
       if (props.Images.length > 0){
-      setCoverurl(imgList[(props.coverIndex -1 )])
-      }
-
-      if (props.Images.length === 0){
-        setDefaultcoveron(true)
-      } else {
-        setDefaultcoveron(false)
-      }
+        console.log("not zero", props, coverURL, defaultCoveron)
+        
+        for (var i = 0; (i <= (props.Images.length - 1 )); i++) {
+                  tempList.push(props.Images[i].image?.url)
+        }
+      setImglist(tempList)
+      setDefaultcoveron(false)
+      setCoverurl(tempList[(props.coverIndex- 1)])
+        } else {
+          setDefaultcoveron(true)
+        }
     }
-    console.log(props, coverURL)
-  }, [props?.Images?.length, coverURL, props.coverIndex])
-  
-
+  setKey(a)
+  console.log("Images length change", props, coverURL, defaultCoveron)
+  }, [props.Images?.length, defaultCoveron])
 
   useEffect(() => {
-    if (typeof props.showCover !== 'undefined'){
-     setVisible(props.showCover)
-    } else {
-     setVisible(true)
+    if (imgList.length > 0){
+      setCoverurl(imgList[(props.coverIndex- 1)])
+      console.log("coverindex change", coverURL)
+      setDefaultcoveron(false)
     }
-  }, [props.showCover, visible])
+  },[props.coverIndex])
 
+  useEffect(() => {
+    setVisible(props.showCover)
+  },[props.showCover])
 
-
-  useEffect(() => {  
-     setVisible(true)
-  }, [])
-
-
-
-  return ( 
+  return (   
   <>
   <div className='wrapper'>
-    <img src={defaultCoveron ? cover : coverURL} style={{opacity: (visible ? 1 : 0)}} alt="Load an image" onClick={() => setToggler(!toggler)}/>
+    <img src={defaultCoveron ? cover : coverURL } style={{opacity: (visible ? 1 : 0)}} alt="Load an image" onClick={() => setToggler(!toggler)}/>
     
   <FsLightbox
   toggler={toggler}
-  sources={defaultCoveron ? [cover] : imgList}
+  sources={defaultCoveron ? [cover] : coverURL}
   thumbs={imgList}
   key={key}
   slide={1}/></div>
   </>
-
 )};
 
 registerVevComponent(Lightbox, {
-  name: "fslightbox-Vev2",
+  name: "fslightbox-Vev3",
   props: [
     {
       name: "Images",
@@ -90,7 +83,7 @@ registerVevComponent(Lightbox, {
     {
         name: "coverIndex",
         type: "number",
-        title: "Index of cover img (One-based indices):",
+        title: "Index of cover img:",
         initialValue: 1,
 
     },
