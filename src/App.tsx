@@ -6,8 +6,14 @@ import "./styles.css";
 
 //Define the default function. Cover is the image loaded when no images has been loaded.
 
+type Props = {
+  title: Images;
+  title: showCower;
+  title: coverIndex;
+};
 
-const Lightbox = (props) => {
+const Lightbox = ({ showCover=true, Images, coverIndex = 1 }: Props) => {
+
 
   const cover = "https://cdn.vev.design/cdn-cgi/image/f=auto,q=82/private/eZnxAcdFstddxKYGM8AXAUiPaAo2/image/_W5nWypsaj.png";
   const [ key,setKey ] = useState(0);
@@ -15,42 +21,40 @@ const Lightbox = (props) => {
   const [ imgList,setImglist ] = useState([]);
   const [ visible,setVisible ] = useState(true);
   const [ defaultCoveron,setDefaultcoveron ] = useState(true);
-  const [ coverURL,setCoverurl ] = useState("");
+  const [ coverURL,setCoverurl ] = useState("https://cdn.vev.design/cdn-cgi/image/f=auto,q=82/private/eZnxAcdFstddxKYGM8AXAUiPaAo2/image/_W5nWypsaj.png");
   const { disabled } = useEditorState();
  
   useEffect(() => {
     var a = 0
-    if (typeof props.Images !== 'undefined') {
-      console.log("not undefined", props)
+    if (typeof Images !== 'undefined') {
       let tempList = []
-      if (props.Images.length > 0){
-        console.log("not zero", props, coverURL, defaultCoveron)
-        
-        for (var i = 0; (i <= (props.Images.length - 1 )); i++) {
-                  tempList.push(props.Images[i].image?.url)
+      if (Images.length > 0){
+        for (var i = 0; (i <= (Images.length - 1 )); i++) {
+                  tempList.push(Images[i].image?.url)
         }
       setImglist(tempList)
       setDefaultcoveron(false)
-      setCoverurl(tempList[(props.coverIndex- 1)])
+      setCoverurl(tempList[(coverIndex- 1)])
         } else {
           setDefaultcoveron(true)
         }
     }
   setKey(a)
-  console.log("Images length change", props, coverURL, defaultCoveron)
-  }, [props.Images?.length, defaultCoveron])
+  console.log("Images length change")
+  }, [Images?.length, defaultCoveron])
 
   useEffect(() => {
     if (imgList.length > 0){
-      setCoverurl(imgList[(props.coverIndex- 1)])
-      console.log("coverindex change", coverURL)
+      setCoverurl(imgList[(coverIndex- 1)])
       setDefaultcoveron(false)
     }
-  },[props.coverIndex])
+    console.log("coverindex change")
+  },[coverIndex])
 
   useEffect(() => {
-    setVisible(props.showCover)
-  },[props.showCover])
+    setVisible(showCover)
+    console.log("visible", showCover)
+  },[showCover])
 
   return (   
   <>
@@ -91,7 +95,7 @@ registerVevComponent(Lightbox, {
         name: "showCover",
         type: "boolean",
         title: "Show cover image",
-        initialValue: true,
+        initialValue:true,
     },
   ],
 });
