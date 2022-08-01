@@ -1,12 +1,12 @@
-import React, { useEffect, useRef, useState, } from 'react';
-import { registerVevComponent, useSize, useEditorState } from '@vev/react';
+import React, { useEffect, useState, } from 'react';
+import { registerVevComponent } from '@vev/react';
 import FsLightbox from 'fslightbox-react';
 import "./styles.css";
 
 type Props = {
-  title: Images,
-  title: showCover,
-  title: coverIndex,
+  Images: Array;
+  showCover: boolean;
+  coverIndex: number;
 };
 
 const Lightbox = ({ showCover = true, Images, coverIndex = 1 }: Props) => {
@@ -17,7 +17,6 @@ const Lightbox = ({ showCover = true, Images, coverIndex = 1 }: Props) => {
   const [visible, setVisible] = useState(true);
   const [defaultCoveron, setDefaultcoveron] = useState(true);
   const [coverURL, setCoverurl] = useState("https://cdn.vev.design/cdn-cgi/image/f=auto,q=82/private/eZnxAcdFstddxKYGM8AXAUiPaAo2/image/_W5nWypsaj.png");
-  const { disabled } = useEditorState();
 
   useEffect(() => {
     var a = 0
