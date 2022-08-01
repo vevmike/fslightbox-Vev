@@ -4,9 +4,9 @@ import FsLightbox from 'fslightbox-react';
 import "./styles.css";
 
 type Props = {
-  title: Images;
-  title: showCower;
-  title: coverIndex;
+  title: Images,
+  title: showCover,
+  title: coverIndex,
 };
 
 const Lightbox = ({ showCover = true, Images, coverIndex = 1 }: Props) => {
