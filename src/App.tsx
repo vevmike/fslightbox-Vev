@@ -3,12 +3,6 @@ import { registerVevComponent } from '@vev/react';
 import FsLightbox from 'fslightbox-react';
 import "./styles.css";
 
-type Props = {
-  Images: Array;
-  showCover: boolean;
-  coverIndex: number;
-};
-
 const Lightbox = ({ showCover = true, Images, coverIndex = 1 }: Props) => {
   const cover = "https://cdn.vev.design/cdn-cgi/image/f=auto,q=82/private/eZnxAcdFstddxKYGM8AXAUiPaAo2/image/_W5nWypsaj.png";
   const [key, setKey] = useState(0);
